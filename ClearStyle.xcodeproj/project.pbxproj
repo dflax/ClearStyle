@@ -14,6 +14,7 @@
 		FE630C9D1ADC631A00D3458D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE630C9B1ADC631A00D3458D /* LaunchScreen.xib */; };
 		FE630CA91ADC631A00D3458D /* ClearStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE630CA81ADC631A00D3458D /* ClearStyleTests.swift */; };
 		FE630CB31ADC64F100D3458D /* ToDoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE630CB21ADC64F100D3458D /* ToDoItem.swift */; };
+		FE630CB51ADC68A900D3458D /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE630CB41ADC68A900D3458D /* TableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		FE630CA71ADC631A00D3458D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE630CA81ADC631A00D3458D /* ClearStyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearStyleTests.swift; sourceTree = "<group>"; };
 		FE630CB21ADC64F100D3458D /* ToDoItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoItem.swift; sourceTree = "<group>"; };
+		FE630CB41ADC68A900D3458D /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 			children = (
 				FE630C921ADC631A00D3458D /* AppDelegate.swift */,
 				FE630C941ADC631A00D3458D /* ViewController.swift */,
+				FE630CB41ADC68A900D3458D /* TableViewCell.swift */,
 				FE630CB21ADC64F100D3458D /* ToDoItem.swift */,
 				FE630C961ADC631A00D3458D /* Main.storyboard */,
 				FE630C991ADC631A00D3458D /* Images.xcassets */,
@@ -216,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE630C951ADC631A00D3458D /* ViewController.swift in Sources */,
+				FE630CB51ADC68A900D3458D /* TableViewCell.swift in Sources */,
 				FE630C931ADC631A00D3458D /* AppDelegate.swift in Sources */,
 				FE630CB31ADC64F100D3458D /* ToDoItem.swift in Sources */,
 			);
