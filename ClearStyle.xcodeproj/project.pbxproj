@@ -15,6 +15,7 @@
 		FE630CA91ADC631A00D3458D /* ClearStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE630CA81ADC631A00D3458D /* ClearStyleTests.swift */; };
 		FE630CB31ADC64F100D3458D /* ToDoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE630CB21ADC64F100D3458D /* ToDoItem.swift */; };
 		FE630CB51ADC68A900D3458D /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE630CB41ADC68A900D3458D /* TableViewCell.swift */; };
+		FEE6A5C41ADD6B3200AD761F /* StrikeThroughText.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE6A5C31ADD6B3200AD761F /* StrikeThroughText.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		FE630CA81ADC631A00D3458D /* ClearStyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearStyleTests.swift; sourceTree = "<group>"; };
 		FE630CB21ADC64F100D3458D /* ToDoItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoItem.swift; sourceTree = "<group>"; };
 		FE630CB41ADC68A900D3458D /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		FEE6A5C31ADD6B3200AD761F /* StrikeThroughText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StrikeThroughText.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			children = (
 				FE630C921ADC631A00D3458D /* AppDelegate.swift */,
 				FE630C941ADC631A00D3458D /* ViewController.swift */,
+				FEE6A5C31ADD6B3200AD761F /* StrikeThroughText.swift */,
 				FE630CB41ADC68A900D3458D /* TableViewCell.swift */,
 				FE630CB21ADC64F100D3458D /* ToDoItem.swift */,
 				FE630C961ADC631A00D3458D /* Main.storyboard */,
@@ -218,6 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEE6A5C41ADD6B3200AD761F /* StrikeThroughText.swift in Sources */,
 				FE630C951ADC631A00D3458D /* ViewController.swift in Sources */,
 				FE630CB51ADC68A900D3458D /* TableViewCell.swift in Sources */,
 				FE630C931ADC631A00D3458D /* AppDelegate.swift in Sources */,

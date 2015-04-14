@@ -53,10 +53,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as TableViewCell
 		cell.selectionStyle = .None
-		cell.textLabel?.backgroundColor = UIColor.clearColor()
+//		cell.textLabel?.backgroundColor = UIColor.clearColor()
 
 		let item = toDoItems[indexPath.row]
-		cell.textLabel?.text = item.text
+//		cell.textLabel?.text = item.text
 
 		// For the TableViewCell delegate protocol
 		cell.delegate = self
