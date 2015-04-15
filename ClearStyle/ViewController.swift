@@ -13,8 +13,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 	@IBOutlet weak var tableView: UITableView!
 	var toDoItems = [ToDoItem]()
 
+	// To enable pinch to add-new functionality
+	let pinchRecognizer = UIPinchGestureRecognizer()
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
+
+		// For the pinch-to-add-new functionality
+		pinchRecognizer.addTarget(self, action: "handlePinch:")
+		tableView.addGestureRecognizer(pinchRecognizer)
 
 		// Set up the TableView stuff
 		tableView.dataSource = self
@@ -112,6 +119,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 				}
 			})
 		}
+		if editingCell.toDoItem!.text == "" {
+			toDoItemDeleted(editingCell.toDoItem!)
+		}
 	}
 
 	func toDoItemDeleted(toDoItem: ToDoItem) {
@@ -151,6 +161,108 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		let indexPathForRow = NSIndexPath(forRow: index, inSection: 0)
 		tableView.deleteRowsAtIndexPaths([indexPathForRow], withRowAnimation: .Fade)
 		tableView.endUpdates()
+	}
+
+	// MARK: - pinch-to-add methods
+
+	struct TouchPoints {
+		var upper: CGPoint
+		var lower: CGPoint
+	}
+
+	// the indices of the upper and lower cells that are being pinched
+	var upperCellIndex = -100
+	var lowerCellIndex = -100
+
+	// the location of the touch points when the pinch began
+	var initialTouchPoints: TouchPoints!
+
+	// indicates that the pinch was big enough to cause a new item to be added
+	var pinchExceededRequiredDistance = false
+
+	// indicates that the pinch is in progress
+	var pinchInProgress = false
+
+	func handlePinch(recognizer: UIPinchGestureRecognizer) {
+		if recognizer.state == .Began {
+			pinchStarted(recognizer)
+		}
+
+		if recognizer.state == .Changed && pinchInProgress && recognizer.numberOfTouches() == 2 {
+			pinchChanged(recognizer)
+		}
+
+		if recognizer.state == .Ended {
+			pinchEnded(recognizer)
+		}
+	}
+
+	// Called when the pinch starts
+	func pinchStarted(recognizer: UIPinchGestureRecognizer) {
+
+		// find the touch-points
+		initialTouchPoints = getNormalizedTouchPoints(recognizer)
+
+		// locate the cells that these points touch
+		upperCellIndex = -100
+		lowerCellIndex = -100
+		let visibleCells = tableView.visibleCells()  as [TableViewCell]
+		for i in 0..<visibleCells.count {
+			let cell = visibleCells[i]
+
+			if viewContainsPoint(cell, point: initialTouchPoints.upper) {
+				upperCellIndex = i
+
+				// highlight the cell – just for debugging!
+				cell.backgroundColor = UIColor.purpleColor()
+			}
+
+			if viewContainsPoint(cell, point: initialTouchPoints.lower) {
+				lowerCellIndex = i
+
+				// highlight the cell – just for debugging!
+				cell.backgroundColor = UIColor.purpleColor()
+			}
+		}
+
+		// check whether they are neighbors
+		if abs(upperCellIndex - lowerCellIndex) == 1 {
+
+			// initiate the pinch
+			pinchInProgress = true
+
+			// show placeholder cell
+			let precedingCell = visibleCells[upperCellIndex]
+			placeHolderCell.frame = CGRectOffset(precedingCell.frame, 0.0, tableView.rowHeight / 2.0)
+			placeHolderCell.backgroundColor = UIColor.redColor()
+			tableView.insertSubview(placeHolderCell, atIndex: 0)
+		}
+	}
+
+	func pinchChanged(recognizer: UIPinchGestureRecognizer) {
+	}
+
+	func pinchEnded(recognizer: UIPinchGestureRecognizer) {
+	}
+
+	// returns the two touch points, ordering them to ensure that
+	// upper and lower are correctly identified.
+	func getNormalizedTouchPoints(recognizer: UIGestureRecognizer) -> TouchPoints {
+		var pointOne = recognizer.locationOfTouch(0, inView: tableView)
+		var pointTwo = recognizer.locationOfTouch(1, inView: tableView)
+
+		// ensure pointOne is the top-most
+		if pointOne.y > pointTwo.y {
+			let temp = pointOne
+			pointOne = pointTwo
+			pointTwo = temp
+		}
+		return TouchPoints(upper: pointOne, lower: pointTwo)
+	}
+
+	func viewContainsPoint(view: UIView, point: CGPoint) -> Bool {
+		let frame = view.frame
+		return (frame.origin.y < point.y) && (frame.origin.y + (frame.size.height) > point.y)
 	}
 
 	// MARK: - UIScrollViewDelegate methods

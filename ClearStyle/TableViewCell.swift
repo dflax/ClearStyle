@@ -208,7 +208,20 @@ class TableViewCell: UITableViewCell, UITextFieldDelegate {
 		}
 		return false
 	}
-
+/*
+	func textFieldDidEndEditing(textField: UITextField!) {
+		if delegate != nil {
+			delegate!.cellDidEndEditing(self)
+		}
+		if toDoItem != nil {
+			if textField.text == "" {
+				delegate!.toDoItemDeleted(toDoItem!)
+			} else {
+				toDoItem!.text = textField.text
+			}
+		}
+	}
+*/
 	func textFieldDidEndEditing(textField: UITextField!) {
 		if toDoItem != nil {
 			toDoItem!.text = textField.text
