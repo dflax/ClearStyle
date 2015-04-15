@@ -70,19 +70,88 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		return tableView.rowHeight;
 	}
 
-	// TableViewCell DelegateProtocol
+	// MARK: - TableViewCellDelegate methods
+	func cellDidBeginEditing(editingCell: TableViewCell) {
+		var editingOffset = tableView.contentOffset.y - editingCell.frame.origin.y as CGFloat
+		let visibleCells = tableView.visibleCells() as [TableViewCell]
+		for cell in visibleCells {
+			UIView.animateWithDuration(0.3, animations: {() in
+				cell.transform = CGAffineTransformMakeTranslation(0, editingOffset)
+				if cell !== editingCell {
+					cell.alpha = 0.3
+				}
+			})
+		}
+	}
+
+	func cellDidEndEditing(editingCell: TableViewCell) {
+		let visibleCells = tableView.visibleCells() as [TableViewCell]
+		for cell: TableViewCell in visibleCells {
+			UIView.animateWithDuration(0.3, animations: {() in
+				cell.transform = CGAffineTransformIdentity
+				if cell !== editingCell {
+					cell.alpha = 1.0
+				}
+			})
+		}
+	}
+
 	func toDoItemDeleted(toDoItem: ToDoItem) {
+
 		let index = (toDoItems as NSArray).indexOfObject(toDoItem)
 		if index == NSNotFound { return }
 
 		// could removeAtIndex in the loop but keep it here for when indexOfObject works
 		toDoItems.removeAtIndex(index)
 
+		// loop over the visible cells to animate delete
+		let visibleCells = tableView.visibleCells() as [TableViewCell]
+		let lastView = visibleCells[visibleCells.count - 1] as TableViewCell
+		var delay = 0.0
+		var startAnimating = false
+
+		for i in 0..<visibleCells.count {
+			let cell = visibleCells[i]
+			if startAnimating {
+				UIView.animateWithDuration(0.3, delay: delay, options: .CurveEaseInOut, animations: {() in
+					cell.frame = CGRectOffset(cell.frame, 0.0, -cell.frame.size.height)}, completion: {(finished: Bool) in
+						if (cell == lastView) {
+							self.tableView.reloadData()
+						}
+					}
+				)
+				delay += 0.03
+			}
+			if cell.toDoItem === toDoItem {
+				startAnimating = true
+				cell.hidden = true
+			}
+		}
+
 		// use the UITableView to animate the removal of this row
 		tableView.beginUpdates()
 		let indexPathForRow = NSIndexPath(forRow: index, inSection: 0)
 		tableView.deleteRowsAtIndexPaths([indexPathForRow], withRowAnimation: .Fade)
 		tableView.endUpdates()
+	}
+
+	// MARK: - UIScrollViewDelegate methods
+	// contains scrollViewDidScroll, and other methods, to keep track of dragging the scrollView
+
+	// a cell that is rendered as a placeholder to indicate where a new item is added
+	let placeHolderCell = TableViewCell(style: .Default, reuseIdentifier: "cell")
+
+	// indicates the state of this behavior
+	var pullDownInProgress = false
+
+	func scrollViewWillBeginDragging(scrollView: UIScrollView!) {
+		// this behavior starts when a user pulls down while at the top of the table
+		pullDownInProgress = scrollView.contentOffset.y <= 0.0
+		placeHolderCell.backgroundColor = UIColor.redColor()
+		if pullDownInProgress {
+			// add the placeholder
+			tableView.insertSubview(placeHolderCell, atIndex: 0)
+		}
 	}
 
 	// MARK: - UITableView delegate methods

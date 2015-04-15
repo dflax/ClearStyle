@@ -13,9 +13,15 @@ import QuartzCore
 protocol TableViewCellDelegate {
 	// indicates that the given item has been deleted
 	func toDoItemDeleted(todoItem: ToDoItem)
+
+	// Indicates that the edit process has begun for the given cell
+	func cellDidBeginEditing(editingCell: TableViewCell)
+
+	// Indicates that the edit process has committed for the given cell
+	func cellDidEndEditing(editingCell: TableViewCell)
 }
 
-class TableViewCell: UITableViewCell {
+class TableViewCell: UITableViewCell, UITextFieldDelegate {
 
 	// Gradient layer properties
 	let gradientLayer = CAGradientLayer()
@@ -78,7 +84,11 @@ class TableViewCell: UITableViewCell {
 
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-		// set up the strike through text label
+		// Set up the editable properties of the text field
+		label.delegate = self
+		label.contentVerticalAlignment = .Center
+
+		// set up the strike through text
 		addSubview(label)
 		addSubview(tickLabel)
 		addSubview(crossLabel)
@@ -182,5 +192,37 @@ class TableViewCell: UITableViewCell {
 		}
 		return false
 	}
+
+	// MARK: - UITextFieldDelegate methods
+
+	func textFieldShouldReturn(textField: UITextField!) -> Bool {
+		// close the keyboard on Enter
+		textField.resignFirstResponder()
+		return false
+	}
+
+	func textFieldShouldBeginEditing(textField: UITextField!) -> Bool {
+		// disable editing of completed to-do items
+		if toDoItem != nil {
+			return !toDoItem!.completed
+		}
+		return false
+	}
+
+	func textFieldDidEndEditing(textField: UITextField!) {
+		if toDoItem != nil {
+			toDoItem!.text = textField.text
+		}
+		if delegate != nil {
+			delegate!.cellDidEndEditing(self)
+		}
+	}
+
+	func textFieldDidBeginEditing(textField: UITextField!) {
+		if delegate != nil {
+			delegate!.cellDidBeginEditing(self)
+		}
+	}
+
 
 }
