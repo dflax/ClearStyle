@@ -58,7 +58,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 	}
  
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as TableViewCell
+		let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! TableViewCell
 		cell.selectionStyle = .None
 //		cell.textLabel?.backgroundColor = UIColor.clearColor()
 
@@ -90,7 +90,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
 		// enter edit mode
 		var editCell: TableViewCell
-		let visibleCells = tableView.visibleCells() as [TableViewCell]
+		let visibleCells = tableView.visibleCells() as! [TableViewCell]
 		for cell in visibleCells {
 			if (cell.toDoItem === toDoItem) {
 				editCell = cell
@@ -102,7 +102,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
 	func cellDidBeginEditing(editingCell: TableViewCell) {
 		var editingOffset = tableView.contentOffset.y - editingCell.frame.origin.y as CGFloat
-		let visibleCells = tableView.visibleCells() as [TableViewCell]
+		let visibleCells = tableView.visibleCells() as! [TableViewCell]
 		for cell in visibleCells {
 			UIView.animateWithDuration(0.3, animations: {() in
 				cell.transform = CGAffineTransformMakeTranslation(0, editingOffset)
@@ -114,7 +114,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 	}
 
 	func cellDidEndEditing(editingCell: TableViewCell) {
-		let visibleCells = tableView.visibleCells() as [TableViewCell]
+		let visibleCells = tableView.visibleCells() as! [TableViewCell]
 		for cell: TableViewCell in visibleCells {
 			UIView.animateWithDuration(0.3, animations: {() in
 				cell.transform = CGAffineTransformIdentity
@@ -137,7 +137,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		toDoItems.removeAtIndex(index)
 
 		// loop over the visible cells to animate delete
-		let visibleCells = tableView.visibleCells() as [TableViewCell]
+		let visibleCells = tableView.visibleCells() as! [TableViewCell]
 		let lastView = visibleCells[visibleCells.count - 1] as TableViewCell
 		var delay = 0.0
 		var startAnimating = false
@@ -210,7 +210,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		// locate the cells that these points touch
 		upperCellIndex = -100
 		lowerCellIndex = -100
-		let visibleCells = tableView.visibleCells()  as [TableViewCell]
+		let visibleCells = tableView.visibleCells()  as! [TableViewCell]
 		for i in 0..<visibleCells.count {
 			let cell = visibleCells[i]
 
@@ -253,7 +253,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		let delta = -min(0, min(upperDelta, lowerDelta))
 
 		// offset the cells, negative for the cells above, positive for those below
-		let visibleCells = tableView.visibleCells() as [TableViewCell]
+		let visibleCells = tableView.visibleCells() as! [TableViewCell]
 		for i in 0..<visibleCells.count {
 			let cell = visibleCells[i]
 			if i <= upperCellIndex {
@@ -287,7 +287,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 			pinchExceededRequiredDistance = false
 
 			// Set all the cells back to the transform identity
-			let visibleCells = self.tableView.visibleCells() as [TableViewCell]
+			let visibleCells = self.tableView.visibleCells() as! [TableViewCell]
 			for cell in visibleCells {
 				cell.transform = CGAffineTransformIdentity
 			}
@@ -298,7 +298,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		} else {
 			// otherwise, animate back to position
 			UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseInOut, animations: {() in
-				let visibleCells = self.tableView.visibleCells() as [TableViewCell]
+				let visibleCells = self.tableView.visibleCells() as! [TableViewCell]
 				for cell in visibleCells {
 					cell.transform = CGAffineTransformIdentity
 				}
@@ -335,7 +335,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 	// indicates the state of this behavior
 	var pullDownInProgress = false
 
-	func scrollViewWillBeginDragging(scrollView: UIScrollView!) {
+	func scrollViewWillBeginDragging(scrollView: UIScrollView) {
 		// this behavior starts when a user pulls down while at the top of the table
 		pullDownInProgress = scrollView.contentOffset.y <= 0.0
 		placeHolderCell.backgroundColor = UIColor.redColor()
@@ -345,7 +345,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		}
 	}
 
-	func scrollViewDidScroll(scrollView: UIScrollView!) {
+	func scrollViewDidScroll(scrollView: UIScrollView) {
 		var scrollViewContentOffsetY = scrollView.contentOffset.y
 
 		if pullDownInProgress && scrollView.contentOffset.y <= 0.0 {
@@ -358,7 +358,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		}
 	}
 
-	func scrollViewDidEndDragging(scrollView: UIScrollView!, willDecelerate decelerate: Bool) {
+	func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
 		// check whether the user pulled down far enough
 		if pullDownInProgress && -scrollView.contentOffset.y > tableView.rowHeight {
 			if pullDownInProgress && -scrollView.contentOffset.y > tableView.rowHeight {
