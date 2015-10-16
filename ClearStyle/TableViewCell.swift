@@ -37,7 +37,7 @@ class TableViewCell: UITableViewCell, UITextFieldDelegate {
 
 	// For strike through text
 	let label: StrikeThroughText
-	let itemCompleteLayer = CALayer()
+	var itemCompleteLayer: CALayer!
 
 	// will aid with the delegate protocol
 	// The object that acts as delegate for this cell.
@@ -52,14 +52,14 @@ class TableViewCell: UITableViewCell, UITextFieldDelegate {
 		}
 	}
 
-	required init(coder aDecoder: NSCoder) {
+	required init?(coder aDecoder: NSCoder) {
 		fatalError("NSCoding not supported")
 	}
 
 	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
 
 		// create a label that renders the to-do item text
-		label = StrikeThroughText(frame: CGRect.nullRect)
+		label = StrikeThroughText(frame: CGRect.null)
 		label.textColor = UIColor.whiteColor()
 		label.font = UIFont.boldSystemFontOfSize(16)
 		label.backgroundColor = UIColor.clearColor()
@@ -67,7 +67,7 @@ class TableViewCell: UITableViewCell, UITextFieldDelegate {
 		// Create a sub-method
 		// utility method for creating the contextual cues
 		func createCueLabel() -> UILabel {
-			let label = UILabel(frame: CGRect.nullRect)
+			let label = UILabel(frame: CGRect.null)
 			label.textColor = UIColor.whiteColor()
 			label.font = UIFont.boldSystemFontOfSize(32.0)
 			label.backgroundColor = UIColor.clearColor()
@@ -113,7 +113,7 @@ class TableViewCell: UITableViewCell, UITextFieldDelegate {
 		layer.insertSublayer(itemCompleteLayer, atIndex: 0)
 
 		// add a pan recognizer
-		var recognizer = UIPanGestureRecognizer(target: self, action: "handlePan:")
+		let recognizer = UIPanGestureRecognizer(target: self, action: "handlePan:")
 		recognizer.delegate = self
 		addGestureRecognizer(recognizer)
 	}
@@ -195,13 +195,13 @@ class TableViewCell: UITableViewCell, UITextFieldDelegate {
 
 	// MARK: - UITextFieldDelegate methods
 
-	func textFieldShouldReturn(textField: UITextField!) -> Bool {
+	func textFieldShouldReturn(textField: UITextField) -> Bool {
 		// close the keyboard on Enter
 		textField.resignFirstResponder()
 		return false
 	}
 
-	func textFieldShouldBeginEditing(textField: UITextField!) -> Bool {
+	func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
 		// disable editing of completed to-do items
 		if toDoItem != nil {
 			return !toDoItem!.completed
@@ -222,16 +222,16 @@ class TableViewCell: UITableViewCell, UITextFieldDelegate {
 		}
 	}
 */
-	func textFieldDidEndEditing(textField: UITextField!) {
+	func textFieldDidEndEditing(textField: UITextField) {
 		if toDoItem != nil {
-			toDoItem!.text = textField.text
+			toDoItem!.text = textField.text!
 		}
 		if delegate != nil {
 			delegate!.cellDidEndEditing(self)
 		}
 	}
 
-	func textFieldDidBeginEditing(textField: UITextField!) {
+	func textFieldDidBeginEditing(textField: UITextField) {
 		if delegate != nil {
 			delegate!.cellDidBeginEditing(self)
 		}
