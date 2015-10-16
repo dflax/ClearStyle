@@ -8,6 +8,7 @@
 
 import UIKit
 import QuartzCore
+import Foundation
 
 // A UITextField subclass that can optionally have a strikethrough - and is editable
 class StrikeThroughText: UITextField {
@@ -45,9 +46,15 @@ class StrikeThroughText: UITextField {
 
 	let kStrikeOutThickness: CGFloat = 2.0
 	func resizeStrikeThrough() {
-		let textSize = text!.sizeWithAttributes([NSFontAttributeName:font])
-		strikeThroughLayer.frame = CGRect(x: 0, y: bounds.size.height/2,
-			width: textSize.width, height: kStrikeOutThickness)
+
+		let theFont:AnyObject = self.font!
+		let dict = [NSFontAttributeName:theFont]
+
+		if let text = self.text {
+			let textSize = text.sizeWithAttributes(dict)
+
+			strikeThroughLayer.frame = CGRect(x: 0, y: bounds.size.height/2, width: textSize.width, height: kStrikeOutThickness)
+		}
 	}
 
 }
